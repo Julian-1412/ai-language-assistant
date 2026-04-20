@@ -10,6 +10,7 @@ It answers questions using only the academy documents, escalates out-of-scope re
 - Escalates out-of-scope questions to a human by email.
 - Exposes a public HTTP endpoint for chatbot/webhook usage.
 - Includes an n8n workflow for automation and escalation routing.
+- **Interactive dashboard** with real-time metrics (queries, cost, escalation rate) and a built-in chat tester.
 - Deployed on Render.
 
 ## Tech Stack
@@ -20,22 +21,30 @@ It answers questions using only the academy documents, escalates out-of-scope re
 - LangChain
 - n8n
 - Gmail node in n8n for escalation notifications
+- HTML + Vanilla JS + CSS (dashboard frontend)
 
 ## Project Structure
 
 ```bash
 ai-language-assistant/
+├── public/                  # Frontend dashboard (served as static files)
+│   ├── index.html
+│   ├── style.css
+│   └── dashboard.js
 ├── src/
 │   ├── app.js
 │   ├── controllers/
 │   ├── services/
+│   │   ├── rag.service.js
+│   │   ├── llm.service.js
+│   │   ├── metrics.service.js
+│   │   └── escalation.service.js
 │   ├── data/
 │   │   └── vectordb/
 │   │       └── store.json
 │   └── scripts/
 ├── n8n/
 │   └── workflow.json
-├── utils/
 ├── README.md
 ├── .env.example
 ├── package.json
@@ -74,11 +83,38 @@ npm install
 npm start
 ```
 
-For development:
+For development (with auto-reload via nodemon):
 
 ```bash
 npm run dev
 ```
+
+## Dashboard
+
+The project includes an interactive dashboard that shows real-time metrics and lets you test the assistant directly from the browser.
+
+### How to open it
+
+1. Start the server:
+   ```bash
+   npm run dev
+   ```
+2. Open your browser and go to:
+   ```
+   http://localhost:3000
+   ```
+
+### Dashboard features
+
+| Section | Description |
+|---|---|
+| **Consultas Procesadas** | Total queries, broken down into resolved and escalated |
+| **Costo Total** | Estimated API cost based on usage |
+| **Tasa de Escalamiento** | Escalation percentage with animated progress bar |
+| **Probar Asistente** | Built-in chat to test the assistant live |
+| **Actividad Reciente** | Last 20 queries with timestamps and escalation status |
+
+Metrics refresh automatically every 10 seconds. You can also click the refresh button in the activity panel to update manually.
 
 ## API
 
@@ -95,8 +131,39 @@ curl https://your-domain.onrender.com/health
 Response:
 
 ```json
+{ "ok": true, "message": "Server is running" }
+```
+
+### Metrics
+
+`GET /api/metrics`
+
+Returns usage statistics for the dashboard.
+
+Example:
+
+```bash
+curl http://localhost:3000/api/metrics
+```
+
+Response:
+
+```json
 {
-  ok: true, message: "Server is running"
+  "totalQueries": 12,
+  "resolvedQueries": 9,
+  "escalatedQueries": 3,
+  "escalationRate": "25.0%",
+  "totalCostUSD": "$0.0360",
+  "recentQueries": [
+    {
+      "message": "What are your English class prices?",
+      "answer": "English class prices are...",
+      "escalated": false,
+      "sources": ["prices-and-programs.md"],
+      "timestamp": "2026-04-20T17:30:00.000Z"
+    }
+  ]
 }
 ```
 
