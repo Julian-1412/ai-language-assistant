@@ -1,0 +1,29 @@
+{
+  "name": "ai-language-assistant",
+  "version": "1.0.0",
+  "description": "AI customer support assistant with RAG and n8n automation",
+  "main": "src/app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "ingest": "node src/scripts/ingest.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@langchain/classic": "^1.0.31",
+    "@langchain/community": "^1.1.27",
+    "@langchain/core": "^1.1.40",
+    "@langchain/openai": "^1.4.4",
+    "@langchain/textsplitters": "^1.0.1",
+    "dotenv": "^16.4.5",
+    "express": "^5.2.1",
+    "fs-extra": "^11.3.4",
+    "openai": "^4.104.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
