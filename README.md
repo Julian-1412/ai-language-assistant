@@ -182,9 +182,7 @@ Request body:
 Example:
 
 ```bash
-curl -X POST https://your-domain.onrender.com/api/ask \
-  -H "Content-Type: application/json" \
-  -d '{"message":"What are your English class prices?"}'
+curl -X POST https://ai-language-assistant-no2e.onrender.com/api/ask \-H "Content-Type: application/json" \-d '{"message":"What are your English class prices?"}'
 ```
 
 Success response example:
@@ -237,6 +235,14 @@ In n8n:
 4. Upload `n8n/workflow.json`.
 5. Update credentials if needed.
 6. Activate the workflow.
+
+  Example:curl -X POST "https://julian-1412.app.n8n.cloud/webhook-test/academy-assistant" \
+  -H "Content-Type: application/json" \
+  -d '{"message":"Do you provide visa sponsorship?"}'
+  
+  curl -X POST "https://julian-1412.app.n8n.cloud/webhook-test/academy-assistant" \
+  -H "Content-Type: application/json" \
+  -d '{"message":"What are your class schedules?"}'
 
 ## Documents Used
 
