@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Language Assistant — Dashboard</title>
+  <meta name="description" content="Real-time dashboard for the AI Language Assistant showing metrics, costs and escalation rates." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Animated background orbs -->
+  <div class="bg-orb bg-orb--1"></div>
+  <div class="bg-orb bg-orb--2"></div>
+  <div class="bg-orb bg-orb--3"></div>
+
+  <div class="app">
+    <!-- Header -->
+    <header class="header" id="dashboard-header">
+      <div class="header__brand">
+        <div class="header__logo">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="32" height="32" rx="8" fill="url(#logo-gradient)" />
+            <path d="M10 22V10l6 4-6 4zm7 0V10l6 4-6 4z" fill="white" opacity="0.9"/>
+            <defs>
+              <linearGradient id="logo-gradient" x1="0" y1="0" x2="32" y2="32">
+                <stop stop-color="#6366f1"/>
+                <stop offset="1" stop-color="#a855f7"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div>
+          <h1 class="header__title">Language Assistant</h1>
+          <p class="header__subtitle">AI-Powered Dashboard</p>
+        </div>
+      </div>
+      <div class="header__status">
+        <span class="status-dot" id="status-dot"></span>
+        <span class="status-text" id="status-text">Connecting…</span>
+      </div>
+    </header>
+
+    <!-- Metric Cards -->
+    <section class="metrics" id="metrics-section">
+      <div class="metric-card metric-card--queries" id="card-queries">
+        <div class="metric-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="metric-card__body">
+          <p class="metric-card__label">Consultas Procesadas</p>
+          <p class="metric-card__value" id="metric-total">—</p>
+          <div class="metric-card__detail">
+            <span class="badge badge--success" id="metric-resolved">0 resueltas</span>
+            <span class="badge badge--warning" id="metric-escalated">0 escaladas</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="metric-card metric-card--cost" id="card-cost">
+        <div class="metric-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div class="metric-card__body">
+          <p class="metric-card__label">Costo Total</p>
+          <p class="metric-card__value" id="metric-cost">—</p>
+          <p class="metric-card__hint">Estimado por uso de API</p>
+        </div>
+      </div>
+
+      <div class="metric-card metric-card--rate" id="card-rate">
+        <div class="metric-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
+        <div class="metric-card__body">
+          <p class="metric-card__label">Tasa de Escalamiento</p>
+          <p class="metric-card__value" id="metric-rate">—</p>
+          <div class="progress-bar">
+            <div class="progress-bar__fill" id="rate-bar"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chat + Recent Activity -->
+    <div class="panels">
+      <!-- Chat Panel -->
+      <section class="panel chat-panel" id="chat-panel">
+        <div class="panel__header">
+          <h2 class="panel__title">💬 Probar Asistente</h2>
+        </div>
+        <div class="chat" id="chat-messages">
+          <div class="chat__welcome">
+            <p>Envía un mensaje para probar el asistente y ver las métricas en tiempo real.</p>
+          </div>
+        </div>
+        <form class="chat__form" id="chat-form">
+          <input
+            type="text"
+            class="chat__input"
+            id="chat-input"
+            placeholder="Escribe tu pregunta aquí…"
+            autocomplete="off"
+            required
+          />
+          <button type="submit" class="chat__send" id="chat-send">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </form>
+      </section>
+
+      <!-- Recent Activity Panel -->
+      <section class="panel activity-panel" id="activity-panel">
+        <div class="panel__header">
+          <h2 class="panel__title">📋 Actividad Reciente</h2>
+          <button class="btn-refresh" id="btn-refresh" title="Actualizar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+          </button>
+        </div>
+        <div class="activity-list" id="activity-list">
+          <p class="activity-list__empty">No hay actividad aún.</p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>

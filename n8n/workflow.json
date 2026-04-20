@@ -1,0 +1,368 @@
+{
+  "name": "Language-assistant",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "academy-assistant",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "4898c2d5-b5ef-40f1-b5a9-7ed4d15ac6c1",
+      "name": "Webhook",
+      "webhookId": "93220347-a941-4eeb-bebb-9a8dafea3e8b"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://ai-language-assistant-no2e.onrender.com/api/ask",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"message\": \"{{$json.body.message}}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "c37d10b4-7507-4f17-87d4-55e5ba446b3a",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1008,
+        272
+      ],
+      "id": "c7287be4-6b40-4ace-a30c-cffb12a5b6cf",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"status\": \"escalated\",\n  \"answer\": \"Your request has been escalated to a human advisor.\",\n  \"human_contact\": \"julian.seg1412@gmail.com\",\n  \"email_sent\": true\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        1168,
+        -288
+      ],
+      "id": "29e03508-e4c1-4fd6-8b11-c7dda624b3a3",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5427bba3-9cc6-4c67-8ef2-50c2e2b7bdae",
+              "name": "status",
+              "value": "success",
+              "type": "string"
+            },
+            {
+              "id": "37ced532-93f5-4003-b03c-48b7fcecb611",
+              "name": "answer",
+              "value": "={{$json.answer}}",
+              "type": "string"
+            },
+            {
+              "id": "5de3b94f-6712-41da-b211-988b2f91c9b7",
+              "name": "sources",
+              "value": "={{$json.sources}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        816,
+        112
+      ],
+      "id": "6661c421-dded-41d3-8fa7-ed4fd56ee98c",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "692d449b-7df9-4207-8503-80efb6c8a23c",
+              "name": "status",
+              "value": "escalated",
+              "type": "string"
+            },
+            {
+              "id": "553048e6-ffec-4704-8239-0112fe1cbbb6",
+              "name": "user_message",
+              "value": "={{$node[\"Webhook\"].json.body.message}}",
+              "type": "string"
+            },
+            {
+              "id": "5246d8b9-5efa-4fcb-b6df-3b0f7e7a7101",
+              "name": "answer",
+              "value": "={{$json.answer}}",
+              "type": "string"
+            },
+            {
+              "id": "95418eee-dcab-49b9-8308-04fcd4e63a7a",
+              "name": "sources",
+              "value": "={{$json.sources}}",
+              "type": "string"
+            },
+            {
+              "id": "3d9fdceb-05ba-457d-b6e6-9bda38fccb67",
+              "name": "human_contact",
+              "value": "julian.seg1412@gmail.com",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        784,
+        -144
+      ],
+      "id": "ec21b19f-9b14-4605-9a8c-98adfe5c872c",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4469ff6d-8d8a-47bf-a3f5-b42442d3b47d",
+              "name": "route_key",
+              "value": "={{ $json.escalate ? 'true' : 'false' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        416,
+        0
+      ],
+      "id": "dacce035-ef26-498b-b53f-4c5899d9dac0",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{$json.route_key}}",
+                    "rightValue": "true",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "0a342eae-dd63-4feb-9348-0361c118f617"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "518306ed-5a97-449a-be2c-034050ad131c",
+                    "leftValue": "={{$json.route_key}}",
+                    "rightValue": "false",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        608,
+        0
+      ],
+      "id": "d1676f8b-28f2-4987-a3d9-4a1ca6626df7",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "sendTo": "julian.seg1412@gmail.com",
+        "subject": "Escalated customer inquiry",
+        "emailType": "text",
+        "message": "=A customer inquiry was escalated by the AI assistant.  User question: {{$json.user_message}}  Assistant response: {{$json.answer}}  Sources: {{ Array.isArray($json.sources) ? $json.sources.join(', ') : $json.sources }}  Manual follow-up required.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        992,
+        -144
+      ],
+      "id": "977a885e-46dd-4217-ad3a-9e0a0e1fde65",
+      "name": "Send a message",
+      "webhookId": "bd8c95c6-375c-4a53-a730-fe4c445d169d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "rIOuAINYflqgFTCU",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "6ae2cc45-2eda-43eb-a725-36a165a3eeaf",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "50e89ae01beafa06be545abe54848bd6ec8b324441863d4697d935bad2b1813d"
+  },
+  "id": "4sW9L7yXKA2ZFwGe",
+  "tags": []
+}

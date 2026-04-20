@@ -1,5 +1,6 @@
 import { retrieveRelevantChunks } from "../services/rag.service.js";
 import { generateAnswer } from "../services/llm.service.js";
+import { recordQuery, getMetrics } from "../services/metrics.service.js";
 
 function detectOutOfScope(message, chunks) {
   const userQuestion = message.toLowerCase();
@@ -41,21 +42,25 @@ export const askAssistant = async (req, res) => {
     const chunks = await retrieveRelevantChunks(message);
 
     if (!chunks.length) {
-      return res.json({
+      const result = {
         answer:
           "I could not find verified information in the academy documents. Your request will be escalated to a human advisor.",
         escalate: true,
         sources: []
-      });
+      };
+      recordQuery({ message, ...result });
+      return res.json(result);
     }
 
     if (detectOutOfScope(message, chunks)) {
-      return res.json({
+      const result = {
         answer:
           "This topic is outside the documented scope of the academy. Your request will be escalated to a human advisor.",
         escalate: true,
         sources: chunks.map((chunk) => chunk.metadata.source)
-      });
+      };
+      recordQuery({ message, ...result });
+      return res.json(result);
     }
 
     const llmAnswer = await generateAnswer({
@@ -64,19 +69,23 @@ export const askAssistant = async (req, res) => {
     });
 
     if (llmAnswer === "ESCALATE") {
-      return res.json({
+      const result = {
         answer:
           "I could not verify that information from the academy documents. Your request will be escalated to a human advisor.",
         escalate: true,
         sources: chunks.map((chunk) => chunk.metadata.source)
-      });
+      };
+      recordQuery({ message, ...result });
+      return res.json(result);
     }
 
-    return res.json({
+    const result = {
       answer: llmAnswer,
       escalate: false,
       sources: chunks.map((chunk) => chunk.metadata.source)
-    });
+    };
+    recordQuery({ message, ...result });
+    return res.json(result);
   } catch (error) {
     console.error("Assistant error:", error);
 
@@ -84,4 +93,8 @@ export const askAssistant = async (req, res) => {
       error: "Internal server error"
     });
   }
+};
+
+export const getMetricsHandler = (req, res) => {
+  res.json(getMetrics());
 };
