@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "pageContent": "# Enrollment Policy\n\nStudents can enroll online or on-site.\n\n## Enrollment steps\n1. Fill out the registration form.\n2. Choose the program and schedule.\n3. Make the payment.\n4. Send proof of payment by email.\n\n## Required documents\n- Copy of ID\n- Proof of payment\n\n## Contact\nFor enrollment support, contact advisors@languageacademy.co\n\n## Refund policy\nPayments are refundable only within the first 3 calendar days after enrollment, as long as the course has not started.",
+    "metadata": {
+      "source": "enrollment-policy.md",
+      "loc": {
+        "lines": {
+          "from": 1,
+          "to": 19
+        }
+      }
+    }
+  },
+  {
+    "id": 2,
+    "pageContent": "# FAQ and Certifications\n\n## Certifications\nThe academy issues a completion certificate for students who complete the program and attend at least 80% of classes.\n\n## Placement test\nNew students can take a placement test before enrollment.\n\n## Class size\nGroup classes have a maximum of 12 students.\n\n## Customer support\nHuman support is available Monday to Friday from 8:00 AM to 5:00 PM.\n\n## Scope limitation\nThe academy documents do not include visa guidance, job placement, or accommodation services.",
+    "metadata": {
+      "source": "faq-and-certifications.md",
+      "loc": {
+        "lines": {
+          "from": 1,
+          "to": 16
+        }
+      }
+    }
+  },
+  {
+    "id": 3,
+    "pageContent": "# Prices and Programs\n\nThe academy offers English, French, and Portuguese programs.\n\n## English Program\n- Basic A1-A2: COP 280,000 per month\n- Intermediate B1-B2: COP 320,000 per month\n- Advanced C1: COP 360,000 per month\n\n## French Program\n- Basic A1-A2: COP 300,000 per month\n- Intermediate B1-B2: COP 340,000 per month\n\n## Portuguese Program\n- Basic A1-A2: COP 260,000 per month\n\n## Schedules\n- Morning classes: Monday to Friday, 7:00 AM to 9:00 AM\n- Evening classes: Monday to Friday, 6:00 PM to 8:00 PM\n- Saturday classes: 8:00 AM to 12:00 PM\n\n## Modalities\n- On-site classes in Medellín\n- Live online classes via Zoom",
+    "metadata": {
+      "source": "prices-and-programs.md",
+      "loc": {
+        "lines": {
+          "from": 1,
+          "to": 24
+        }
+      }
+    }
+  }
+]
